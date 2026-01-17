@@ -22,3 +22,23 @@ def test_login():
         assert resp.status_code == 200
         # The email of the user logged in is displayed on the page
         assert "john@simplylift.co" in resp.data.decode()
+
+
+def test_clubs_page():
+    """
+    Test that the /clubs page loads correctly
+    and displays all club names and their points
+    """
+    with app.test_client() as client:
+        resp = client.get("/clubs")
+        
+        assert resp.status_code == 200
+
+        html = resp.data.decode()
+
+        assert "Simply Lift" in html
+        assert "13" in html
+        assert "Iron Temple" in html
+        assert "4" in html
+        assert "She Lifts" in html
+        assert "12" in html
