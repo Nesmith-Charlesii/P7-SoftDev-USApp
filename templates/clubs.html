@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .clubs-page {
+        display: flex;
+        justify-content: center;   /* center horizontally */
+        margin-top: 60px;
+    }
+
+    .clubs-table {
+        border-collapse: collapse;
+        width: 400px;
+    }
+
+    .clubs-table th,
+    .clubs-table td {
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        text-align: left;          /* keep text left-aligned */
+    }
+
+    .clubs-table th {
+        background-color: #f4f4f4;
+    }
+</style>
+
+<div class="clubs-page">
+    <div>
+        <h2 style="margin-bottom: 20px;">Clubs List</h2>
+
+        <table class="clubs-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for club in clubs %}
+                <tr>
+                    <td>{{ club['name'] }}</td>
+                    <td>{{ club['points'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
