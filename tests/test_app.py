@@ -70,3 +70,13 @@ def test_booking_deducts_club_points():
         assert "Great-booking complete!" in page
 
         assert "Points available: <strong>11</strong>" in page
+def test_booking_past_competition_returns_403():
+    with app.test_client() as client:
+        client.post("/login", data={"email": "john@simplylift.co"})
+
+        response = client.get("/book/Fall Classic")
+        page = response.data.decode()
+
+        assert response.status_code == 403
+        assert "You cannot book spots for past competitions." in page
+
