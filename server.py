@@ -1,4 +1,6 @@
 from flask import Flask, flash, redirect, render_template, request, session, url_for
+from datetime import datetime
+
 
 from provider import get_clubs, get_competitions
 
@@ -45,6 +47,11 @@ def book(competition):
     matching_comps = [comp for comp in competitions if comp["name"] == competition]
 
     found_competition = matching_comps[0]
+    competition_date = datetime.strptime(found_competition["date"], "%Y-%m-%d %H:%M:%S")
+
+    if competition_date < datetime.now():
+        flash("You cannot book spots for past competitions.")
+        return redirect(url_for("summary"))
 
     if found_competition:
         return render_template("booking.html", club=club, competition=found_competition)
