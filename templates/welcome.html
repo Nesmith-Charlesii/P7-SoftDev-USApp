@@ -1,17 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Welcome, {{club['email']}} </h2><a href="{{url_for('logout')}}">Logout</a>
-
+<h2>Welcome, {{club['email']}} </h2>
+<a href="{{url_for('logout')}}">Logout</a>
 {% with messages = get_flashed_messages()%}
 {% if messages %}
-<ul>
+<ul style="margin: 15px;">
+    <strong>
     {% for message in messages %}
-    <li>{{message}}</li>
+        {% if message == "You don't have enough points!" %}
+        <li style="color:red;">{{message}}</li>
+        {% elif message == "Not enough spots available!" %}
+        <li style="color:red;">{{message}}</li>
+        {% else %}  
+        <li style="color:green;">{{message}}</li>
+        {% endif %}
     {% endfor %}
+    </strong>
 </ul>
 {% endif%}
-Points available: {{club['points']}}
+<br />
+<br />
+Points available: <strong>{{club['points']}}</strong>
+<br/>
+<br/>
 <h3>Competitions:</h3>
 <ul>
     {% for comp in competitions%}

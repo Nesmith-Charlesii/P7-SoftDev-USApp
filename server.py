@@ -69,11 +69,11 @@ def book_spots():
 
     if spots_required > int(competition["spotsAvailable"]):
         flash("Not enough spots available!")
-        return render_template("booking.html", club=club, competition=competition)
+        return render_template("welcome.html", club=club, competitions=competitions)
     
     if spots_required > int(club["points"]):
         flash("You don't have enough points!")
-        return render_template("booking.html", club=club, competition=competition)
+        return render_template("welcome.html", club=club, competitions=competitions)
     
     competition["spotsAvailable"] = int(competition["spotsAvailable"]) - spots_required
     club["points"] = int(club["points"]) - spots_required
