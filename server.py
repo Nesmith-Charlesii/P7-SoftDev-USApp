@@ -50,8 +50,10 @@ def book(competition):
     competition_date = datetime.strptime(found_competition["date"], "%Y-%m-%d %H:%M:%S")
 
     if competition_date < datetime.now():
-        flash("You cannot book spots for past competitions.")
-        return redirect(url_for("summary"))
+        return render_template(
+            "error.html",
+            message="You cannot book spots for past competitions.",
+        ), 403
 
     if found_competition:
         return render_template("booking.html", club=club, competition=found_competition)
