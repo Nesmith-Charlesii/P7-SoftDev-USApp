@@ -24,19 +24,13 @@ def test_login():
         assert "john@simplylift.co" in resp.data.decode()
 
 
-def test_cannot_book_past_competition():
+def test_booking_past_competition_returns_403():
     with app.test_client() as client:
-        client.post(
-            "/login",
-            data={"email": "john@simplylift.co"},
-            follow_redirects=True,
-        )
+        client.post("/login", data={"email": "john@simplylift.co"})
 
-        response = client.get(
-            "/book/Fall Classic",
-            follow_redirects=True,
-        )
-
+        response = client.get("/book/Fall Classic")
         page = response.data.decode()
 
+        assert response.status_code == 403
         assert "You cannot book spots for past competitions." in page
+
