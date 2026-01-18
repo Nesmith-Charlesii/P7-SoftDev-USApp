@@ -22,3 +22,31 @@ def test_login():
         assert resp.status_code == 200
         # The email of the user logged in is displayed on the page
         assert "john@simplylift.co" in resp.data.decode()
+
+
+def test_booking_deducts_club_points():
+    """
+    Booking spots should deduct the same number of points
+    from the club balance (1 spot = 1 point)
+    """
+    with app.test_client() as client:
+        client.post(
+            "/login",
+            data={"email": "john@simplylift.co"},
+            follow_redirects=True,
+        )
+
+        response = client.post(
+            "/book",
+            data={
+                "competition": "Spring Festival",
+                "spots": "2",
+            },
+            follow_redirects=True,
+        )
+
+        page = response.data.decode()
+
+        assert "Great-booking complete!" in page
+
+        assert "Points available: <strong>11</strong>" in page
