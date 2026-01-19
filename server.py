@@ -76,6 +76,15 @@ def book_spots():
 
     spots_required = int(request.form["spots"])
 
+    if spots_required > 12:
+        return (
+            render_template(
+                "error.html",
+                message="You cannot book more than 12 spots for a competition."
+            ),
+            403,
+        )
+
     if spots_required > int(competition["spotsAvailable"]):
         flash("Not enough spots available!")
         return render_template("welcome.html", club=club, competitions=competitions)
