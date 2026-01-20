@@ -104,3 +104,38 @@ def test_cannot_book_more_than_12_spots_returns_403():
         assert response.status_code == 403
         assert "You cannot book more than 12 spots for a competition." in page
 
+
+def test_cannot_book_more_points_than_club_has_returns_403():
+    with app.test_client() as client:
+        client.post(
+            "/login",
+            data={"email": "john@simplylift.co"},
+            follow_redirects=True,
+        )
+
+        first_response = client.post(
+            "/book",
+            data={
+                "competition": "Spring Festival",
+                "spots": "4",
+            },
+            follow_redirects=True,
+        )
+
+        assert first_response.status_code == 200
+        assert "Great-booking complete!" in first_response.data.decode()
+
+        second_response = client.post(
+            "/book",
+            data={
+                "competition": "Spring Festival",
+                "spots": "10",
+            },
+        )
+
+        page = second_response.data.decode()
+
+        assert second_response.status_code == 403
+        assert "Not enough points available" in page
+
+
