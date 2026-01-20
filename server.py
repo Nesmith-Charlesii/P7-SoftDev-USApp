@@ -1,4 +1,6 @@
 from flask import Flask, flash, redirect, render_template, request, session, url_for
+from datetime import datetime
+
 
 from provider import get_clubs, get_competitions
 
@@ -45,6 +47,13 @@ def book(competition):
     matching_comps = [comp for comp in competitions if comp["name"] == competition]
 
     found_competition = matching_comps[0]
+    competition_date = datetime.strptime(found_competition["date"], "%Y-%m-%d %H:%M:%S")
+
+    if competition_date < datetime.now():
+        return render_template(
+            "error.html",
+            message="You cannot book spots for past competitions.",
+        ), 403
 
     if found_competition:
         return render_template("booking.html", club=club, competition=found_competition)
@@ -64,8 +73,16 @@ def book_spots():
     ]
 
     competition = matching_comps[0]
-
     spots_required = int(request.form["spots"])
+
+    if spots_required > int(club["points"]):
+        return (
+            render_template(
+                "error.html",
+                message="You don't have enough points!"
+            ),
+            403,
+        )
 
     if spots_required > 12:
         return (
@@ -79,21 +96,19 @@ def book_spots():
     if spots_required > int(competition["spotsAvailable"]):
         flash("Not enough spots available!")
         return render_template("welcome.html", club=club, competitions=competitions)
-    
-    if spots_required > int(club["points"]):
-        flash("You don't have enough points!")
-        return (
-            render_template(
-                "error.html",
-                message="You don't have enough points!"
-            ),
-            403,
-        )
-    
+
     competition["spotsAvailable"] = int(competition["spotsAvailable"]) - spots_required
     club["points"] = int(club["points"]) - spots_required
     flash("Great-booking complete!")
+
     return render_template("welcome.html", club=club, competitions=competitions)
+
+
+
+@app.route("/clubs")
+def clubs():
+    clubs = get_clubs()
+    return render_template("clubs.html", clubs=clubs)
 
 
 @app.route("/logout")

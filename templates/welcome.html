@@ -1,31 +1,59 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Welcome, {{club['email']}} </h2><a href="{{url_for('logout')}}">Logout</a>
 
-{% with messages = get_flashed_messages()%}
-{% if messages %}
-<ul>
-    {% for message in messages %}
-    <li>{{message}}</li>
-    {% endfor %}
-</ul>
-{% endif%}
-Points available: {{club['points']}}
-<h3>Competitions:</h3>
-<ul>
-    {% for comp in competitions%}
-    <li>
-        {{comp['name']}}<br />
-        Date: {{comp['date']}}</br>
-        Number of spots available: {{comp['spotsAvailable']}}
-        {% if comp['spotsAvailable']|int >0 %}
-        <a href="{{ url_for('book',competition=comp['name']) }}">Book spots</a>
-        {% endif %}
-    </li>
-    <hr />
-    {% endfor %}
-</ul>
+<style>
+    .welcome-page {
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;     
+        justify-content: center;  
+    }
+</style>
+
+<div class="welcome-page">
+    <h2 style="color: blue; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+        Welcome, {{club['email']}}
+    </h2>
+    <a href="{{url_for('logout')}}">Logout</a>
+    {% with messages = get_flashed_messages()%}
+    {% if messages %}
+    <ul style="margin: 15px;">
+        <strong>
+        {% for message in messages %}
+            {% if message == "You don't have enough points!" %}
+            <li style="color:red;">{{message}}</li>
+            {% elif message == "Not enough spots available!" %}
+            <li style="color:red;">{{message}}</li>
+            {% else %}  
+            <li style="color:green;">{{message}}</li>
+            {% endif %}
+        {% endfor %}
+        </strong>
+    </ul>
+    {% endif%}
+    <br />
+    <br />
+    Points available: <strong>{{club['points']}}</strong>
+    <br/>
+    <br/>
+    <h3>Competitions:</h3>
+    <br/>
+    <ul>
+        {% for comp in competitions%}
+        <li>
+            {{comp['name']}}<br />
+            Date: {{comp['date']}}</br>
+            Number of spots available: {{comp['spotsAvailable']}}
+            {% if comp['spotsAvailable']|int >0 %}
+            <a href="{{ url_for('book',competition=comp['name']) }}">Book spots</a>
+            {% endif %}
+        </li>
+        <hr />
+        {% endfor %}
+    </ul>
+</div>
 {% endwith %}
 
 {% endblock %}
