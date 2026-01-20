@@ -79,7 +79,7 @@ def book_spots():
         return (
             render_template(
                 "error.html",
-                message="You don't have enough points!"
+                message="Not enough points available"
             ),
             403,
         )
