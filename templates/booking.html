@@ -1,13 +1,69 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>{{competition['name']}}</h2>
-<h5>
-    Spots available: {{competition['spotsAvailable']}}
-</h5>
-<form action="/book" method="post">
-    <input type="hidden" name="competition" value="{{competition['name']}}">
-    <label for="spots">How many spots?</label><input type="number" name="spots" id="input-spots" />
-    <button type="submit">Book</button>
-</form>
+
+<style>
+    .booking-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;      
+        text-align: center;
+        gap: 20px;                 
+        margin-top: 50px;          
+    }
+
+    .booking-page h2 {
+        font-size: 3em;           
+        color: rgba(65, 65, 65, 0.85);
+        margin-bottom: 10px;
+    }
+
+    .booking-page h5 {
+        font-size: 2em;            
+        color: rgba(49, 49, 49, 0.7);
+        margin-bottom: 20px;
+    }
+
+    .booking-page form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;                
+    }
+
+    .booking-page input[type="number"] {
+        width: 80px;
+        text-align: center;
+        font-size: 1.2em; 
+    }
+
+    .booking-page button {
+        padding: 10px 25px;
+        font-size: 1.2em;
+        margin-top: 15px;         
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    .booking-page button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="booking-page">
+    <h2>{{ competition['name'] }}</h2>
+    <h5>Spots available: {{ competition['spotsAvailable'] }}</h5>
+
+    <form action="/book" method="post">
+        <input type="hidden" name="competition" value="{{ competition['name'] }}">
+        <label for="input-spots">How many spots?</label>
+        <input type="number" name="spots" id="input-spots" min="1" max="12">
+        <button type="submit">Book</button>
+    </form>
+</div>
+
 {% endblock %}
