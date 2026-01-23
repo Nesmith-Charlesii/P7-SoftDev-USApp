@@ -24,6 +24,22 @@ def test_login():
         assert "john@simplylift.co" in resp.data.decode()
 
 
+def test_login_with_invalid_email_returns_401():
+    with app.test_client() as client:
+        response = client.post(
+            "/login",
+            data={"email": "notfound@example.com"},
+            follow_redirects=False  
+        )
+
+        page = response.data.decode()
+        print(response.status_code)
+        print(page)
+
+        assert response.status_code == 401
+        assert "Sorry, but we couldn&#39;t find an account with that email." in page
+
+
 def test_clubs_page():
     """
     Test that the /clubs page loads correctly
