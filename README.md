@@ -1,36 +1,72 @@
 # gudlift-registration
 
-### Why
+This is a proof of concept (POC) project to demonstrate a lightweight competition booking platform. The goal is to keep things simple while allowing iterative improvements based on user feedback. This project uses Python v3.x+, Flask, virtual environments, pytest, and coverage.
 
-This is a proof of concept (POC) project to show a light-weight version of our competition booking platform. The aim is the keep things as light as possible, and use feedback from the users to iterate.
+1. **Clone the repository and navigate into it:**
 
-### Getting Started
+   git clone <repo-url>  
+   cd gudlift-registration
 
-This project uses the following technologies:
+2. **Create a virtual environment:**
 
-* Python v3.x+
-* [Flask](https://flask.palletsprojects.com/)
-* [Virtual environment](https://docs.python.org/3/library/venv.html)
+   python -m venv venv
 
+3. **Activate the virtual environment:**
 
-### Installation
+   - Windows (PowerShell): .\venv\Scripts\Activate.ps1  
+   - Windows (cmd): venv\Scripts\activate  
+   - macOS/Linux: source venv/bin/activate
 
-- Clone the repository and create a new virtual (`python -m venv <VENV_FOLDER>`)
+4. **Install dependencies:**
 
-- Make sure the virtual environment you created is active
+   pip install -r requirements.txt
 
-- Install the requirements based on the `requirements.txt` file: `pip install -r requirements.txt`
+5. **Run the application:**
 
-- Run the application with `python server.py`. The app will start and display in the terminal a link where you can access it (locally) using your browser.
+   python server.py
 
-### Current setup
+   The app will start and display a local link in the terminal (e.g., http://127.0.0.1:5000/) where you can access it in your browser.
 
-The app is powered by [JSON files](https://www.tutorialspoint.com/json/json_quick_guide.htm). They live in the `data` folder.
-    
-* `competitions.json` - list of competitions
-* `clubs.json` - list of clubs with relevant information. Inspect this file to find email addresses you can use to login.
+6. **Understand the data:**
 
-### Testing
+   The app uses JSON files in the `data/` folder:  
 
-The project uses [pytest](https://docs.pytest.org/). You should also use [coverage](https://coverage.readthedocs.io/) to create a coverage report.
+   - `competitions.json` – list of competitions with date, available spots, etc.  
+   - `clubs.json` – list of clubs with name, email, and points. Use these emails to log in.
 
+7. **Run Tests:**
+
+   Tests are handled with pytest:
+
+   pytest  
+   coverage run -m pytest  
+   coverage report -m
+
+   Mock fixtures in `conftest.py` provide static data during tests, so modifying the JSON files will not affect tests unless the mocks are updated.
+
+8. **Follow Naming Conventions:**
+
+   Routes are lowercase with underscores, e.g., /book/<competition>. Templates match endpoints logically, e.g., index.html, booking.html, error.html. Static assets go in static/ (CSS, JS, images, gifs). JSON files live in data/ and use snake_case, e.g., clubs.json, competitions.json.
+
+9. **External Resources:**
+
+   - [Flask Documentation](https://flask.palletsprojects.com/)  
+   - [pytest](https://docs.pytest.org/)  
+   - [coverage.py](https://coverage.readthedocs.io/)  
+   - [JSON Guide](https://www.tutorialspoint.com/json/json_quick_guide.htm)  
+
+10. **Common Questions:**
+
+   - How do I log in? Use an email listed in clubs.json.  
+   - How are competitions ordered? By the order in competitions.json.  
+   - Why is data static? This is a POC; data is mocked via JSON for simplicity.  
+   - Can I book more spots than allowed? No, the system prevents booking more than 12 spots or more than your available points.  
+   - What happens if I try to book a past competition? You will see an error page with HTTP status code 403.  
+   - Why do some tests fail if I change JSON files? Tests use mocked data from conftest.py. Editing data/ alone won't affect them.  
+   - How do I add a new club or competition? Update the JSON files in data/ and restart the server.
+
+11. **Demo / Error Flows:**
+
+   - Invalid Login: entering an email not in clubs.json shows an error page with HTTP 401.  
+   - Booking More Points Than Available: attempting to book more spots than your club has shows an error page with HTTP 403.  
+   - Booking More Than 12 Spots: the system enforces a 12-spot maximum, returning HTTP 403.
