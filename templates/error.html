@@ -2,21 +2,48 @@
 
 {% block content %}
 
-<style> 
+<style>
     .error-page {
-        align-self: center;
         display: flex;
         flex-direction: column;
-        align-items: center;     
-        justify-content: center;  
-    } 
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .status_code {
+        font-size: 20em;
+        color: rgba(75, 75, 75, 0.301);
+        line-height: 1;
+        margin: 0;
+    }
+
+    h2 {
+        color: rgba(65, 65, 65, 0.829);
+        font-size: 4em;
+        margin: 0;
+    }
+
+    .message {
+        margin-top: 10px;
+        color: rgba(0, 0, 0, 0.452);
+        font-family: 'calibri', sans-serif;
+        font-size: 2.2em;
+    }
 </style>
 
-<div class="error-page">    
-    <h2>Access denied</h2>
-    <p style="color: red;"><strong>{{ message }}</strong></p>
+<div class="error-page">
+    {% if status_code == 401 %}
+    <p class="status_code"><strong>{{ status_code }}</strong></p>
+    <h2>Unauthorized access</h2>
+    <p class="message"><strong>{{ message }}</strong></p>
+    <a href="{{ url_for('index') }}">Back to login</a>
+    {% elif status_code == 403 %}
+    <p class="status_code"><strong>{{ status_code }}</strong></p>
+    <h2>Forbidden</h2>
+    <p class="message"><strong>{{ message }}</strong></p>
     <a href="{{ url_for('summary') }}">Back to summary</a>
+    {% endif %}
 </div>
-
 
 {% endblock %}

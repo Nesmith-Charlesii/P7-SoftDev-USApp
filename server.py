@@ -22,6 +22,12 @@ def login():
     clubs = get_clubs()
     email = request.form["email"]
 
+    if email not in [club["email"] for club in clubs]:
+        return render_template(
+            "error.html", message="Sorry, but we couldn't find an account with that email.",
+            status_code=401
+        ), 401
+    
     club = [item for item in clubs if item["email"] == email][0]
     session["club"] = club
 
@@ -53,6 +59,7 @@ def book(competition):
         return render_template(
             "error.html",
             message="You cannot book spots for past competitions.",
+            status_code=403
         ), 403
 
     if found_competition:
@@ -79,7 +86,8 @@ def book_spots():
         return (
             render_template(
                 "error.html",
-                message="Not enough points available"
+                message="Not enough points available",
+                status_code=403
             ),
             403,
         )
@@ -88,7 +96,8 @@ def book_spots():
         return (
             render_template(
                 "error.html",
-                message="You cannot book more than 12 spots for a competition."
+                message="You cannot book more than 12 spots for a competition.",
+                status_code=403
             ),
             403,
         )
