@@ -24,7 +24,7 @@ def login():
 
     if email not in [club["email"] for club in clubs]:
         return render_template(
-            "error.html", message="Email not found", 
+            "error.html", message="Sorry, but we couldn't find an account with that email.",
             status_code=401
         ), 401
     
