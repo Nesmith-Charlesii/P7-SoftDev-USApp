@@ -8,7 +8,8 @@
         {
             "name": "Fall Classic",
             "date": "2020-10-22 13:30:00",
-            "spotsAvailable": "13"
+            "spotsAvailable": "13",
+            "totalSpots": "13"
         }
     ]
 }

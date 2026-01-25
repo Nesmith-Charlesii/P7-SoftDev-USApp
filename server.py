@@ -2,7 +2,7 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from datetime import datetime
 
 
-from provider import get_clubs, get_competitions, save_competitions
+from provider import get_clubs, get_competitions, save_competitions, save_clubs
 
 
 app = Flask(__name__)
@@ -118,9 +118,16 @@ def book_spots():
 
     competition["spotsAvailable"] = int(competition["spotsAvailable"]) - spots_required
     club["points"] = int(club["points"]) - spots_required
-    flash("Great-booking complete!")
 
+    clubs = get_clubs()
+    for c in clubs:
+        if c["email"] == club["email"]:
+            c["points"] = club["points"]
+
+    save_clubs(clubs)
     save_competitions(competitions)
+
+    flash("Great-booking complete!")
 
     return render_template(
         "welcome.html",
