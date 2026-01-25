@@ -90,6 +90,24 @@ def test_booking_deducts_club_points():
         assert "Points available: <strong>11</strong>" in page
 
 
+def test_competition_spots_are_decreased_globally_after_booking():
+    with app.test_client() as client:
+        client.post("/login", data={"email": "john@simplylift.co"})
+
+        client.post(
+            "/book",
+            data={
+                "competition": "Spring Festival",
+                "spots": "5",
+            },
+        )
+
+        response = client.get("/summary")
+        html = response.data.decode()
+
+        assert "20" in html
+
+
 def test_booking_past_competition_returns_403():
     with app.test_client() as client:
         client.post("/login", data={"email": "john@simplylift.co"})
