@@ -92,7 +92,11 @@ def test_booking_deducts_club_points():
 
 def test_competition_spots_are_decreased_globally_after_booking():
     with app.test_client() as client:
-        client.post("/login", data={"email": "john@simplylift.co"})
+        client.post(
+            "/login",
+            data={"email": "john@simplylift.co"},
+            follow_redirects=True,
+        )
 
         client.post(
             "/book",
@@ -100,12 +104,21 @@ def test_competition_spots_are_decreased_globally_after_booking():
                 "competition": "Spring Festival",
                 "spots": "5",
             },
+            follow_redirects=True,
         )
 
-        response = client.get("/summary")
-        html = response.data.decode()
+        client.get("/logout")
 
-        assert "20" in html
+        response = client.post(
+            "/login",
+            data={"email": "admin@irontemple.com"},
+            follow_redirects=True,
+        )
+
+        page = response.data.decode()
+
+        assert "Spring Festival" in page
+        assert "20" in page
 
 
 def test_booking_past_competition_returns_403():

@@ -25,8 +25,12 @@ def get_clubs():
 
 
 def get_competitions():
-    """Load competitions from JSON"""
-    return _json_from_file("competitions.json", "competitions")
+    """Load competitions from JSON and add totalSpots if not present"""
+    competitions = _json_from_file("competitions.json", "competitions")
+    for comp in competitions:
+        comp.setdefault('totalSpots', comp['spotsAvailable'])
+    return competitions
+
 
 
 def save_competitions(competitions):
