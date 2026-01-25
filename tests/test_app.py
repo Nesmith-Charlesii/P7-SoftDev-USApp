@@ -14,8 +14,10 @@ def test_login():
     """Tests a login action"""
     with app.test_client() as c:
         resp = c.post(
-            "/login", data={"email": "john@simplylift.co"}, follow_redirects=True
-        )
+            "/login",
+            data={
+                "email": "john@simplylift.co"},
+            follow_redirects=True)
         # We should be redirected to the summary page
         assert request.path == "/summary"
         # The status code should be 200 OK
@@ -29,7 +31,7 @@ def test_login_with_invalid_email_returns_401():
         response = client.post(
             "/login",
             data={"email": "notfound@example.com"},
-            follow_redirects=False  
+            follow_redirects=False
         )
 
         page = response.data.decode()
@@ -47,7 +49,7 @@ def test_clubs_page():
     """
     with app.test_client() as client:
         resp = client.get("/clubs")
-        
+
         assert resp.status_code == 200
 
         html = resp.data.decode()
@@ -59,7 +61,7 @@ def test_clubs_page():
         assert "She Lifts" in html
         assert "12" in html
 
-        
+
 def test_booking_deducts_club_points():
     """
     Booking spots should deduct the same number of points
@@ -116,7 +118,7 @@ def test_cannot_book_more_than_12_spots_returns_403():
         )
 
         page = response.data.decode()
-       
+
         assert response.status_code == 403
         assert "You cannot book more than 12 spots for a competition." in page
 
@@ -153,5 +155,3 @@ def test_cannot_book_more_points_than_club_has_returns_403():
 
         assert second_response.status_code == 403
         assert "Not enough points available" in page
-
-
