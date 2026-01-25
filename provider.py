@@ -24,6 +24,11 @@ def get_clubs():
     return _json_from_file("clubs.json", "clubs")
 
 
+def save_clubs(clubs):
+    """Save updated clubs back to JSON"""
+    _save_json_to_file("clubs.json", "clubs", clubs)
+
+
 def get_competitions():
     """Load competitions from JSON and add totalSpots if not present"""
     competitions = _json_from_file("competitions.json", "competitions")
