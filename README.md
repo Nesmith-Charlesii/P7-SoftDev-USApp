@@ -5,7 +5,7 @@ This is a proof of concept (POC) project to demonstrate a lightweight competitio
 1. **Clone the repository and navigate into it:**
 
    git clone <repo-url>  
-   cd gudlift-registration
+   cd <root folder>
 
 2. **Create a virtual environment:**
 
@@ -36,11 +36,14 @@ This is a proof of concept (POC) project to demonstrate a lightweight competitio
 
 7. **Run Tests:**
 
-   Tests are handled with pytest:
+   Tests, coverage, and reports can be generated with a single command:
 
-   pytest  
-   coverage run -m pytest  
-   coverage report -m
+   pytest --cov=. --cov-report=term --cov-report=html --junitxml=report.xml
+
+   This will:
+   - Display a coverage summary in the terminal  
+   - Generate an HTML coverage report in `htmlcov/`  
+   - Generate a JUnit-compatible test report as `report.xml`  
 
    Mock fixtures in `conftest.py` provide static data during tests, so modifying the JSON files will not affect tests unless the mocks are updated.
 
