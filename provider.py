@@ -12,11 +12,27 @@ def _json_from_file(filename, key):
         return data[key]
 
 
+def _save_json_to_file(filename, key, data):
+    """Helper method - saves JSON data back to 'filename' under 'key'"""
+    filepath = Path(__file__).parent / DATA_FOLDER / filename
+    with open(filepath, "w") as fp:
+        json.dump({key: data}, fp, indent=4)
+
+
 def get_clubs():
     """Load clubs from JSON"""
     return _json_from_file("clubs.json", "clubs")
 
 
 def get_competitions():
-    """Load competitions from JSON"""
-    return _json_from_file("competitions.json", "competitions")
+    """Load competitions from JSON and add totalSpots if not present"""
+    competitions = _json_from_file("competitions.json", "competitions")
+    for comp in competitions:
+        comp.setdefault('totalSpots', comp['spotsAvailable'])
+    return competitions
+
+
+
+def save_competitions(competitions):
+    """Persist updated competitions to JSON"""
+    _save_json_to_file("competitions.json", "competitions", competitions)

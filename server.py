@@ -2,7 +2,8 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from datetime import datetime
 
 
-from provider import get_clubs, get_competitions
+from provider import get_clubs, get_competitions, save_competitions
+
 
 app = Flask(__name__)
 # You should change the secret key in production!
@@ -115,10 +116,11 @@ def book_spots():
             club=club,
             competitions=competitions)
 
-    competition["spotsAvailable"] = int(
-        competition["spotsAvailable"]) - spots_required
+    competition["spotsAvailable"] = int(competition["spotsAvailable"]) - spots_required
     club["points"] = int(club["points"]) - spots_required
     flash("Great-booking complete!")
+
+    save_competitions(competitions)
 
     return render_template(
         "welcome.html",

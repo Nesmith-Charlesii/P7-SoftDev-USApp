@@ -56,7 +56,7 @@
 
 <div class="booking-page">
     <h2>{{ competition['name'] }}</h2>
-    <h5>Spots available: {{ competition['spotsAvailable'] }}</h5>
+    <h5>Spots available: {{ competition['spotsAvailable'] }}/{{ competition['totalSpots'] }}</h5>
 
     <form action="/book" method="post">
         <input type="hidden" name="competition" value="{{ competition['name'] }}">
