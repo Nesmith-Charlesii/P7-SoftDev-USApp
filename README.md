@@ -47,6 +47,12 @@ This is a proof of concept (POC) project to demonstrate a lightweight competitio
 
    Mock fixtures in `conftest.py` provide static data during tests, so modifying the JSON files will not affect tests unless the mocks are updated.
 
+   **View the HTML coverage report in your browser:**
+   - **Windows:** `start htmlcov/index.html`  
+   - **macOS:** `open htmlcov/index.html`  
+   - **Linux:** `xdg-open htmlcov/index.html`  
+   - Alternatively, open `htmlcov/index.html` manually from your file explorer.
+
 8. **Follow Naming Conventions:**
 
    Routes are lowercase with underscores, e.g., /book/<competition>. Templates match endpoints logically, e.g., index.html, booking.html, error.html. Static assets go in static/ (CSS, JS, images, gifs). JSON files live in data/ and use snake_case, e.g., clubs.json, competitions.json.
